@@ -1,0 +1,28 @@
+.leaflet-top, .leaflet-bottom {
+  position: fixed !important;
+}
+
+.leaflet-top {
+  top: 100px !important;
+}
+
+.weather-Popup .leaflet-popup-content-wrapper {
+  min-width: 360px;
+}
+
+.weather-Root .leaflet-container {
+  height: 800px;
+}
+
+.leaflet-popup-content {
+  width: inherit !important;
+  margin: 2px 22px 20px 22px !important;
+}
+
+.leaflet-search-icon {
+  cursor: pointer;
+}
+
+.leaflet-search-icon:hover {
+  background-color: #e2e2e2;
+}
