@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 
-import getWeather from './getWeather';
+import collectData from './collectData';
 
 const app = express();
 app.use(cors());
@@ -15,15 +15,17 @@ app.get('/', (req, res) => {
     res.json({testkey: 'testvalue'});
 });
 
-app.get('/location', (req, res, next) => {
+app.get('/location', async (req, res, next) => {
 
-    getWeather({lat: req.query.lat, lon: req.query.lon}, (weather) => {
+    let responses = await collectData(req, next);
 
-        res.json({
-            weather
-        });
+    const weather = responses[0];
+    const photos = responses[1];
 
-    }, next);
+    res.json({
+        weather,
+        photos
+    });
  
 });
 
@@ -33,7 +35,7 @@ app.listen(port, function () {
 
 /**
  * Sample error:
- * 
+ *
  * {
  *     "statusCode": 404,
  *     "payload": {
