@@ -24,10 +24,24 @@ const getWeather = ({lat, lon}) => (new Promise((resolve, reject) => {
             if (response.statusCode !== 200) {
                 reject(new Boom("Weather: " + weather.message, { statusCode: response.statusCode }));
             } else {
-                resolve(weather);
+                resolve(formatWeather(weather));
             }
         }
     });
 }));
+
+const formatWeather = (w) => ({
+    latlon: {lat: w.coord.lat, lon: w.coord.lon},
+    name: w.name,
+    country: w.sys.country,
+    weather: {
+        summary: w.weather[0].main,
+        description: w.weather[0].description,
+        wind: {speed: w.wind.speed, direction: w.wind.deg},
+        humidity: w.main.humidity,
+        pressure: w.main.pressure,
+        temperature: w.main.temp
+    }
+});
 
 export default getWeather;

@@ -8,7 +8,7 @@ const FLICKR_PHOTOS_APIKEY = "89612f71fcd01cdfed9374a0e651e888";
 const FLICKR_PHOTOS_URL = "https://www.flickr.com/photos";
 const FLICKR_PHOTOS_FRAME = "in/photostream/lightbox";
 
-const getPhotos = ({lat, lon}, count) => (new Promise((resolve, reject) => {
+const getPhotos = ({lat, lon}, count=1) => (new Promise((resolve, reject) => {
     request({
         url: FLICKR_PHOTOS_SERVICES_URL,
         qs: {
@@ -29,10 +29,10 @@ const getPhotos = ({lat, lon}, count) => (new Promise((resolve, reject) => {
             const data = JSON.parse(body);
 
             if (response.statusCode !== 200) {
-                reject(new Boom("Flickr error", { statusCode: response.statusCode,  decorate: data  }));
+                reject(new Boom("Flickr error", { statusCode: response.statusCode, decorate: data }));
             } else {
                 if (data.stat !== "ok") {
-                    reject(new Boom("Flickr: " + data.message, { decorate: data }));
+                    reject(new Boom("Flickr: " + data.message));
                 } else {
                     resolve(photoUrls(data.photos.photo));
                 }

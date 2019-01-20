@@ -3,6 +3,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 
 import collectData from './collectData';
+import getWeather from './getWeather';
+import getPhotos from './getPhotos';
 
 const app = express();
 app.use(cors());
@@ -29,6 +31,38 @@ app.get('/location', async (req, res, next) => {
  
 });
 
+app.get('/location/weather', async(req, res, next) => {
+
+    try {
+        const latlon = {lat: req.query.lat, lon: req.query.lon};
+
+        const weather = await getWeather(latlon);
+
+        res.json({
+            weather
+        });
+
+    } catch(error) {
+        next(error);
+    }
+
+});
+
+app.get('/location/photos', (req, res, next) => {
+
+        const latlon = {lat: req.query.lat, lon: req.query.lon};
+        const photosCount = req.query.photosCount ? req.query.photosCount : 1;
+
+        getPhotos(latlon, photosCount).then((photos) => {
+
+            res.json({
+                photos
+            });
+
+        }, next);
+
+});
+
 app.listen(port, function () {
     console.log('Example app listening on port ' + port + '!');
 });
@@ -47,7 +81,15 @@ app.listen(port, function () {
  * }
  */
 app.use((err, req, res, next) => {
-    console.log("ERROR HANDLER --------");
-    console.log(err);
-    res.status(err.output.statusCode).json(err.output);
+    console.error(err.stack);
+    if (err.output) {
+        res.status(err.output.statusCode).json(Object.assign({ stack: err.stack }, err.output.payload));
+    } else {
+        res.status(500).json({
+            statusCode: 500,
+            stack: err.stack,
+            error: "Internal server error",
+            message: err.message
+        });
+    }
 });
