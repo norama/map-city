@@ -50,16 +50,16 @@ app.get('/location/weather', async(req, res, next) => {
 
 app.get('/location/photos', (req, res, next) => {
 
-        const latlon = {lat: req.query.lat, lon: req.query.lon};
-        const photosCount = req.query.photosCount ? req.query.photosCount : 1;
+    const latlon = {lat: req.query.lat, lon: req.query.lon};
+    const photosCount = req.query.photosCount ? req.query.photosCount : 1;
 
-        getPhotos(latlon, photosCount).then((photos) => {
+    getPhotos(latlon, photosCount).then((photos) => {
 
-            res.json({
-                photos
-            });
+        res.json({
+            photos
+        });
 
-        }, next);
+    }, next);
 
 });
 

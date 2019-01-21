@@ -101,7 +101,8 @@ export default class WeatherMap extends Component {
 
   updateMarker = (id, latlng) => {
     const self = this;
-    getWeather(latlng, (weather) => {
+    getWeather(latlng, (data) => {
+      const weather = data.weather;
       self.setState((prevState) => {
         let markers = _.clone(prevState.markers);
 
@@ -195,19 +196,19 @@ class WeatherMarker extends Component {
 const WeatherPopup = ({ weather }) => {
   const w = weather;
   const rows = [{
-    name: 'position', value: '(lat: '+w.coord.lat + ', lon: '+w.coord.lon + ')'
+    name: 'position', value: '(lat: '+w.latlon.lat + ', lon: '+w.latlon.lon + ')'
   }, {
-    name: 'place', value: w.name + ' ('+ w.sys.country +')'
+    name: 'place', value: w.name + ' ('+ w.country +')'
   }, {
-    name: 'weather', value: w.weather[0].main + ': ' + w.weather[0].description
+    name: 'weather', value: w.weather.summary + ': ' + w.weather.description
   }, {
-    name: 'wind', value: 'speed (m/s): ' + w.wind.speed + (w.wind.deg ? '  direction (degrees): ' + w.wind.deg : '')
+    name: 'wind', value: 'speed (m/s): ' + w.weather.wind.speed + (w.weather.wind.direction ? '  direction (degrees): ' + w.weather.wind.direction : '')
   }, {
-    name: 'humidity (%)', value: w.main.humidity
+    name: 'humidity (%)', value: w.weather.humidity
   }, {
-    name: 'pressure (hPa)', value: w.main.pressure
+    name: 'pressure (hPa)', value: w.weather.pressure
   }, {
-    name: 'temperature (\u2103)', value: w.main.temp
+    name: 'temperature (\u2103)', value: w.weather.temperature
   }];
 
   return <JsonTable rows={rows} settings={{header: false}} />;
