@@ -9,6 +9,11 @@ const FLICKR_PHOTOS_URL = "https://www.flickr.com/photos";
 const FLICKR_PHOTOS_FRAME = "in/photostream/lightbox";
 
 const getPhotos = ({lat, lon}, count=1) => (new Promise((resolve, reject) => {
+    getPhotosWithinRadius({lat, lon}, count, 4, resolve, reject);
+}));
+
+const getPhotosWithinRadius = ({lat, lon}, count, radius, resolve, reject) => {
+
     request({
         url: FLICKR_PHOTOS_SERVICES_URL,
         qs: {
@@ -16,6 +21,7 @@ const getPhotos = ({lat, lon}, count=1) => (new Promise((resolve, reject) => {
             nojsoncallback: 1,
             lat: lat,
             lon: lon,
+            radius: radius,
             format: "json",
             per_page: count,
             api_key: FLICKR_PHOTOS_APIKEY
@@ -34,13 +40,17 @@ const getPhotos = ({lat, lon}, count=1) => (new Promise((resolve, reject) => {
                 if (data.stat !== "ok") {
                     reject(new Boom("Flickr: " + data.message));
                 } else {
-                    resolve(photoUrls(data.photos.photo));
+                    const photos = data.photos.photo;
+                    if (photos.length < count && radius < 32) {
+                        getPhotosWithinRadius({lat, lon}, count, 2*radius, resolve, reject);
+                    } else {
+                        resolve(photoUrls(photos));
+                    }
                 }
             }
         }
     });
-}));
-
+};
 
 const photoUrls = (photos) => (photos.map((photo) => photoUrl(photo)));
 

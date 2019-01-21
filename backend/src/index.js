@@ -68,16 +68,13 @@ app.listen(port, function () {
 });
 
 /**
- * Sample error:
+ * Example error:
  *
  * {
- *     "statusCode": 404,
- *     "payload": {
- *         "statusCode": 404,
- *         "error": "Not Found",
- *         "message": "Internal error"
- *     },
- *     "headers": {}
+ *     "stack": "Error: Weather: Nothing to geocode",
+ *     "statusCode": 400,
+ *     "error": "Bad Request",
+ *     "message": "Weather: Nothing to geocode"
  * }
  */
 app.use((err, req, res, next) => {
