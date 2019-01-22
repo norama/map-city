@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import _ from 'lodash';
 
 import JsonTable from 'ts-react-json-table';
@@ -29,14 +30,13 @@ class WeatherMapSearch extends ReactLeafletSearch {
   latLngHandler(latLng, info) {
 
     this.setState({ search: latLng, info: info }, () => {
-      this.flyTo();
 
       const latlng = {
         lat: latLng[0],
         lng: latLng[1]
       };
 
-      this.props.addMarker(latlng);
+      this.props.addMarker(latlng, true);
     });
   }
 
@@ -95,11 +95,11 @@ export default class WeatherMap extends Component {
     </div>)
   }
 
-  addMarker = (latlng) => {
-    this.updateMarker(_.uniqueId('marker-'), latlng);
+  addMarker = (latlng, centralize) => {
+    this.updateMarker(_.uniqueId('marker-'), latlng, centralize);
   };
 
-  updateMarker = (id, latlng) => {
+  updateMarker = (id, latlng, centralize=false) => {
     const self = this;
     getWeather(latlng, (data) => {
       const weather = data.weather;
@@ -116,20 +116,31 @@ export default class WeatherMap extends Component {
           });
         }
 
+        const center = centralize ? latlng : prevState.center;
+
         return {
-          markers
+          markers,
+          center
         };
+      }, () => {
+
+        if (centralize) {
+            // centralize workaround, 
+            // for some reason setting state.center is not enough
+            const c = this.state.center;
+            const r = 0.2;
+            this.mapRef.current.leafletElement.fitBounds([
+                { lat: c.lat - r, lng: c.lng - r }, 
+                { lat: c.lat + r, lng: c.lng + r }
+            ]);
+        }
       });
     });
 
   }
 
   handleLocationFound = (e) => {
-    this.setState({
-      center: e.latlng
-    }, () => {
-      this.addMarker(this.state.center);
-    });
+      this.addMarker(e.latlng, true);
   };
 
   handleClick = (e) => {
@@ -167,7 +178,7 @@ class WeatherMarker extends Component {
     return (
       <Marker
         ref={this.markerRef}
-        position={[this.props.latlng.lat, this.props.latlng.lng]}
+        position={this.props.latlng}
         draggable={true}
         onDragend={this.handleDragend}>
 
