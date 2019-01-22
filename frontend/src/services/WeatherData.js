@@ -7,11 +7,12 @@ export default function getWeather(latlng, callback) {
         qs: {
             lat: latlng.lat,
             lon: latlng.lng,
-            photosCount: 1
+            photosCount: 2
         }
     }, (error, response, body) => {
 
         if (error) {
+            alert('Server error\nSee console for details.');
             console.error(error);
             return;
         }
@@ -19,6 +20,7 @@ export default function getWeather(latlng, callback) {
         const data = JSON.parse(body);
 
         if (response.statusCode !== 200) {
+            alert('Weather data error\nSee console for details.');
             console.error(data);
         } else {
             callback(data);

@@ -7,7 +7,16 @@
 }
 
 .weather-Popup .leaflet-popup-content-wrapper {
-  min-width: 360px;
+  min-width: 300px;
+}
+
+.weather-Popup-photos {
+    margin-top: 3px;
+    display: flex;
+}
+.weather-Popup-photos a {
+    margin-left: 2px;
+    width: 130px;
 }
 
 .weather-Root .leaflet-container {

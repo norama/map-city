@@ -70,6 +70,7 @@ export default class WeatherMap extends Component {
         <Map 
             center={this.state.center} 
             onLocationfound={this.handleLocationFound}
+            onMoveend={this.handleMoveEnd}
             onClick={this.handleClick}
             ref={this.mapRef}
             zoomControl={false}
@@ -84,10 +85,12 @@ export default class WeatherMap extends Component {
             />
             <Search
                 position="topleft"
+                inputPlaceholder="Enter place"
                 provider="OpenStreetMap"
                 showMarker={true}
                 showPopup={true}
                 addMarker={this.addMarker}
+                openSearchOnLoad={true}
                 closeResultsOnClick={true}
             />
             <WeatherMarkersList markers={this.state.markers} onDragend={this.updateMarker} />
@@ -102,39 +105,38 @@ export default class WeatherMap extends Component {
     updateMarker = (id, latlng, centralize=false) => {
         const self = this;
         getWeather(latlng, (data) => {
-        const weather = data.weather;
-        self.setState((prevState) => {
-            let markers = _.clone(prevState.markers);
+            self.setState((prevState) => {
+                let markers = _.clone(prevState.markers);
 
-            const index = _.findIndex(markers, {id});
-            if (index !== -1) {
-                markers[index].weather = weather;
-                markers[index].latlng = latlng;
-            } else {
-                markers.push({
-                    id, weather, latlng
-                });
-            }
+                const index = _.findIndex(markers, {id});
+                if (index !== -1) {
+                    markers[index].data = data;
+                    markers[index].latlng = latlng;
+                } else {
+                    markers.push({
+                        id, data, latlng
+                    });
+                }
 
-            const center = centralize ? latlng : prevState.center;
+                const center = centralize ? latlng : prevState.center;
 
-            return {
-                markers,
-                center
-            };
-        }, () => {
+                return {
+                    markers,
+                    center
+                };
+            }, () => {
 
-            if (centralize) {
-                // centralize workaround, 
-                // for some reason setting state.center is not enough
-                const c = this.state.center;
-                const r = 0.2;
-                this.mapRef.current.leafletElement.fitBounds([
-                    { lat: c.lat - r, lng: c.lng - r }, 
-                    { lat: c.lat + r, lng: c.lng + r }
-                ]);
-            }
-        });
+                if (centralize) {
+                    // centralize workaround, 
+                    // for some reason setting state.center is not enough
+                    const c = this.state.center;
+                    const r = 0.2;
+                    this.mapRef.current.leafletElement.fitBounds([
+                        { lat: c.lat - r, lng: c.lng - r }, 
+                        { lat: c.lat + r, lng: c.lng + r }
+                    ]);
+                }
+            });
         });
 
     }
@@ -142,6 +144,11 @@ export default class WeatherMap extends Component {
     handleLocationFound = (e) => {
         this.addMarker(e.latlng, true);
     };
+
+    handleMoveEnd = (e) => {
+        console.log('Moveend');
+        console.log(this.mapRef.current.leafletElement.getCenter());
+    }
 
     handleClick = (e) => {
         this.addMarker(e.latlng);
@@ -160,7 +167,7 @@ class WeatherMarkersList extends Component {
                 key={marker.id}
                 id={marker.id}
                 latlng={marker.latlng}
-                weather={marker.weather}
+                data={marker.data}
                 onDragend={onDragend}
             />
         ));
@@ -189,7 +196,11 @@ class WeatherMarker extends Component {
                 onDragend={this.handleDragend}>
 
                 <Popup className='weather-Popup'>
-                <WeatherPopup weather={this.props.weather} />
+                    <Weather
+                        weather={this.props.data.weather.weather}
+                        caption={this.props.data.weather.name + ' ('+ this.props.data.weather.country +')'}
+                    />
+                    <Photos photos={this.props.data.photos} />
                 </Popup>
             </Marker>
         );
@@ -210,25 +221,31 @@ class WeatherMarker extends Component {
     };
 }
 
-const WeatherPopup = ({ weather }) => {
+const Weather = ({ weather, caption }) => {
     const w = weather;
     const rows = [{
-        name: 'position', value: '(lat: '+w.latlon.lat + ', lon: '+w.latlon.lon + ')'
+        name: w.summary, value: w.description
     }, {
-        name: 'place', value: w.name + ' ('+ w.country +')'
+        name: w.temperature + ' \u2103', value: ''
     }, {
-        name: 'weather', value: w.weather.summary + ': ' + w.weather.description
+        name: 'wind speed', value: w.wind.speed + ' m/s'
     }, {
-        name: 'wind', value: 'speed (m/s): ' + w.weather.wind.speed + (w.weather.wind.direction ? '  direction (degrees): ' + w.weather.wind.direction : '')
+        name: 'wind dir', value: (w.wind.direction ? w.wind.direction + '\u02DA': '')
     }, {
-        name: 'humidity (%)', value: w.weather.humidity
-    }, {
-        name: 'pressure (hPa)', value: w.weather.pressure
-    }, {
-        name: 'temperature (\u2103)', value: w.weather.temperature
+        name: 'pressure', value: w.pressure + ' hPa'
     }];
 
-    return <JsonTable rows={rows} settings={{header: false}} />;
+    return (
+        <JsonTable caption={caption} rows={rows} settings={{header: false}} />
+    );
 };
-    
+
+const Photos = ({ photos }) => (
+    <div className="weather-Popup-photos">
+        {photos.map((photo) => (<a key={photo} href={photo} target="_blank" rel="noopener noreferrer">Photo nearby </a>))}
+
+        {/*photos.map((photo) => (<img key={photo} src={photo} width={120} height={120} alt="near location" />))*/}
+    </div>
+);
+
 
