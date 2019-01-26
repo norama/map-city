@@ -7,6 +7,7 @@ export default function getWeather(latlng, callback) {
         qs: {
             lat: latlng.lat,
             lon: latlng.lng,
+            size: 't',
             photosCount: 2
         }
     }, (error, response, body) => {

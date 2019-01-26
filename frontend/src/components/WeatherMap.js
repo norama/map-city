@@ -200,7 +200,7 @@ class WeatherMarker extends Component {
                         weather={this.props.data.weather.weather}
                         caption={this.props.data.weather.name + ' ('+ this.props.data.weather.country +')'}
                     />
-                    <Photos photos={this.props.data.photos} />
+                    {this.props.data.photos.length && <Photo photo={this.props.data.photos[0]} />}
                 </Popup>
             </Marker>
         );
@@ -236,15 +236,18 @@ const Weather = ({ weather, caption }) => {
     }];
 
     return (
-        <JsonTable caption={caption} rows={rows} settings={{header: false}} />
+        <>
+            <img src={w.icon} alt={w.summary} title={w.summary} />
+            <JsonTable caption={caption} rows={rows} settings={{header: false}} />
+        </>
     );
 };
 
+const Photo = ({ photo }) => (<img key={photo.url} src={photo.url} width={photo.width} height={photo.height} alt="near location" />);
+
 const Photos = ({ photos }) => (
     <div className="weather-Popup-photos">
-        {photos.map((photo) => (<a key={photo} href={photo} target="_blank" rel="noopener noreferrer">Photo nearby </a>))}
-
-        {/*photos.map((photo) => (<img key={photo} src={photo} width={120} height={120} alt="near location" />))*/}
+        {photos.map((photo) => (<img key={photo.url} src={photo.url} width={photo.width} height={photo.height} alt="near location" />))}
     </div>
 );
 

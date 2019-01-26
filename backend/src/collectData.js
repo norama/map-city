@@ -5,11 +5,12 @@ const collectData = async (req, next) => {
 
     try {
         const latlon = {lat: req.query.lat, lon: req.query.lon};
+        const size = req.query.size;
         const photosCount = req.query.photosCount ? req.query.photosCount : 1;
 
         return await Promise.all([
             getWeather(latlon),
-            getPhotos(latlon, photosCount)
+            getPhotos(latlon, size, photosCount)
         ]);
     
     } catch(error) {

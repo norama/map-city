@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(morgan('combined'));
 
-const port = 3002;
+const port = process.env.PORT || 3002;
 
 /* GET index page. */
 app.get('/', (req, res) => {
@@ -51,9 +51,10 @@ app.get('/location/weather', async(req, res, next) => {
 app.get('/location/photos', (req, res, next) => {
 
     const latlon = {lat: req.query.lat, lon: req.query.lon};
+    const size = req.query.size;
     const photosCount = req.query.photosCount ? req.query.photosCount : 1;
 
-    getPhotos(latlon, photosCount).then((photos) => {
+    getPhotos(latlon, size, photosCount).then((photos) => {
 
         res.json({
             photos

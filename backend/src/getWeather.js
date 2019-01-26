@@ -4,6 +4,8 @@ import Boom from 'boom';
 const OPEN_WEATHER_MAP_URL = "https://api.openweathermap.org/data/2.5/weather";
 const OPEN_WEATHER_MAP_APPID = "702a42edfe2011323fbcbe4cc46a6a41";
 
+const OPEN_WEATHER_MAP_ICON_URL = "http://openweathermap.org/img/w";
+
 const getWeather = ({lat, lon}) => (new Promise((resolve, reject) => {
     request({
         url: OPEN_WEATHER_MAP_URL,
@@ -24,6 +26,7 @@ const getWeather = ({lat, lon}) => (new Promise((resolve, reject) => {
             if (response.statusCode !== 200) {
                 reject(new Boom("Weather: " + weather.message, { statusCode: response.statusCode }));
             } else {
+                console.log(weather);
                 resolve(formatWeather(weather));
             }
         }
@@ -37,11 +40,14 @@ const formatWeather = (w) => ({
     weather: {
         summary: w.weather[0].main,
         description: w.weather[0].description,
+        icon: iconUrl(w.weather[0].icon),
         wind: {speed: w.wind.speed, direction: w.wind.deg},
         humidity: w.main.humidity,
         pressure: w.main.pressure,
         temperature: w.main.temp
     }
 });
+
+const iconUrl = (icon) => (`${OPEN_WEATHER_MAP_ICON_URL}/${icon}.png`);
 
 export default getWeather;
