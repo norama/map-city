@@ -132,7 +132,7 @@ export default class WeatherMap extends Component {
                     const r = 0.2;
                     this.mapRef.current.leafletElement.fitBounds([
                         { lat: c.lat - r, lng: c.lng - r }, 
-                        { lat: c.lat + r, lng: c.lng + r }
+                        { lat: c.lat + 2*r, lng: c.lng + r }
                     ]);
                 }
             });

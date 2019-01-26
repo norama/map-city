@@ -2,10 +2,6 @@
   position: fixed !important;
 }
 
-.leaflet-top {
-  top: 100px !important;
-}
-
 .weather-Popup .leaflet-popup-content-wrapper {
   min-width: 300px;
 }
