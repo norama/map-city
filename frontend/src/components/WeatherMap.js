@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 
 import _ from 'lodash';
 
-import JsonTable from 'ts-react-json-table';
+import { UserCard } from 'react-ui-cards';
 
 import { ReactLeafletSearch } from 'react-leaflet-search';
 
 import './WeatherMap.css';
-import './JsonTable.css';
 
 import {
     Map,
@@ -196,11 +195,7 @@ class WeatherMarker extends Component {
                 onDragend={this.handleDragend}>
 
                 <Popup className='weather-Popup'>
-                    <Weather
-                        weather={this.props.data.weather.weather}
-                        caption={this.props.data.weather.name + ' ('+ this.props.data.weather.country +')'}
-                    />
-                    {this.props.data.photos.length && <Photo photo={this.props.data.photos[0]} />}
+                    <Card data={this.props.data} />
                 </Popup>
             </Marker>
         );
@@ -221,34 +216,34 @@ class WeatherMarker extends Component {
     };
 }
 
-const Weather = ({ weather, caption }) => {
-    const w = weather;
-    const rows = [{
-        name: w.summary, value: w.description
-    }, {
-        name: w.temperature + ' \u2103', value: ''
-    }, {
-        name: 'wind speed', value: w.wind.speed + ' m/s'
-    }, {
-        name: 'wind dir', value: (w.wind.direction ? w.wind.direction + '\u02DA': '')
-    }, {
-        name: 'pressure', value: w.pressure + ' hPa'
-    }];
+const Card = ({ data }) => {
+
+    const weather = data.weather.weather;
+    const title = data.weather.name + ' ('+ data.weather.country +')';
+    const photo = data.photos.length ? data.photos[0].url : weather.icon;
+
+    const temperature = weather.temperature + ' \u02DA' + 'C';
+    const details = weather.summary + ': ' + weather.description;
+    const wind = weather.wind.speed + ' m/s' +
+                    (weather.wind.direction ? ', ' + weather.wind.direction + '\u02DA': '');
+    const pressure = weather.pressure + ' hPa';
 
     return (
-        <>
-            <img src={w.icon} alt={w.summary} title={w.summary} />
-            <JsonTable caption={caption} rows={rows} settings={{header: false}} />
-        </>
+        <UserCard
+            cardClass='weather-Card'
+            header={photo}
+            avatar={weather.icon}
+            name={temperature}
+            positionName={details}
+            stats={[{
+                name: 'wind',
+                value: wind
+            }, {
+                name: 'pressure',
+                value: pressure
+            }]}
+        >
+            <div className='weather-Card-content'>{title}</div>
+        </UserCard>
     );
 };
-
-const Photo = ({ photo }) => (<img key={photo.url} src={photo.url} width={photo.width} height={photo.height} alt="near location" />);
-
-const Photos = ({ photos }) => (
-    <div className="weather-Popup-photos">
-        {photos.map((photo) => (<img key={photo.url} src={photo.url} width={photo.width} height={photo.height} alt="near location" />))}
-    </div>
-);
-
-

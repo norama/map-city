@@ -10,6 +10,10 @@
   min-width: 300px;
 }
 
+.weather-Popup .leaflet-popup-content-wrapper a.leaflet-popup-close-button {
+    padding: 6px 6px 0 0;
+}
+
 .weather-Popup-photos {
     margin-top: 3px;
     display: flex;
@@ -25,7 +29,6 @@
 
 .leaflet-popup-content {
   width: inherit !important;
-  margin: 2px 22px 20px 22px !important;
 }
 
 .leaflet-search-icon {
@@ -34,4 +37,38 @@
 
 .leaflet-search-icon:hover {
   background-color: #e2e2e2;
+}
+
+.weather-Card {
+    margin: 1rem 0.5rem 0.5rem 0.5rem;
+}
+
+.weather-Card .weather-Card-content {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.weather-Card .user-card-body {
+    padding-top: 2.5rem;
+}
+
+.weather-Card .user-card-name {
+    font-weight: 600;
+}
+
+.weather-Card .user-card-avatar {
+    position: absolute;
+    display: flex;
+    flex: 0 0 auto;
+    height: 4rem;
+    width: 4rem;
+    top: calc(50% - 2rem);
+    left: calc(50% - 2rem);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    border-radius: 100%;
+    background-color: lightgrey;
+    z-index: 10;
 }
