@@ -1,0 +1,10 @@
+.PhotoList-root {
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #ECF0F1;
+}
+
+.PhotoList-root img {
+    display: block;
+    margin: 10px auto;
+}
