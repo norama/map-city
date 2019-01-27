@@ -5,7 +5,6 @@
   "author": "Nora Mate",
   "license": "MIT",
   "private": false,
-  "homepage": "https://norama.github.io/map-city",
   "dependencies": {
     "leaflet": "^1.4.0",
     "prop-types": "^15.6.2",

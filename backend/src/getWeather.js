@@ -4,7 +4,7 @@ import Boom from 'boom';
 const OPEN_WEATHER_MAP_URL = "https://api.openweathermap.org/data/2.5/weather";
 const OPEN_WEATHER_MAP_APPID = "702a42edfe2011323fbcbe4cc46a6a41";
 
-const OPEN_WEATHER_MAP_ICON_URL = "http://openweathermap.org/img/w";
+const OPEN_WEATHER_MAP_ICON_URL = "https://openweathermap.org/img/w";
 
 const getWeather = ({lat, lon}) => (new Promise((resolve, reject) => {
     request({
