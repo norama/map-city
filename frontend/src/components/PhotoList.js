@@ -5,7 +5,11 @@ class PhotoList extends Component {
     render() {
         return (
             <div>
-                {this.props.photos.map((photo) => (<img src={photo.url} alt="" key={photo.url} />))}
+                {this.props.photos.map((photo) => (
+                    <a href={photo.view ? photo.view : photo.url} key={photo.url} target="_blank" rel="noopener noreferrer">
+                        <img src={photo.url} alt="" />
+                    </a>
+                ))}
             </div>
         );
     }

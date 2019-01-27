@@ -7,6 +7,8 @@ import { UserCard } from 'react-ui-cards';
 
 import { ReactLeafletSearch } from 'react-leaflet-search';
 
+import MapCard from './MapCard';
+
 import './WeatherMap.css';
 
 import {
@@ -209,7 +211,7 @@ class WeatherMarker extends Component {
                 onDragend={this.handleDragend}>
 
                 <Popup className='weather-Popup'>
-                    <Card data={this.props.data} />
+                    <MapCard weather={this.props.data.weather} photos={this.props.data.photos} />
                 </Popup>
             </Marker>
         );
@@ -229,35 +231,3 @@ class WeatherMarker extends Component {
         this.props.onDragend(this.props.id, e.target._latlng);
     };
 }
-
-const Card = ({ data }) => {
-
-    const weather = data.weather.weather;
-    const title = data.weather.name + ' ('+ data.weather.country +')';
-    const photo = data.photos.length ? data.photos[0].url : weather.icon;
-
-    const temperature = weather.temperature + ' \u02DAC';
-    const details = weather.summary + ': ' + weather.description;
-    const wind = weather.wind.speed + ' m/s' +
-                    (weather.wind.direction ? ', ' + weather.wind.direction + '\u02DA': '');
-    const pressure = weather.pressure + ' hPa';
-
-    return (
-        <UserCard
-            cardClass='weather-Card'
-            header={photo}
-            avatar={weather.icon}
-            name={temperature}
-            positionName={details}
-            stats={[{
-                name: 'wind',
-                value: wind
-            }, {
-                name: 'pressure',
-                value: pressure
-            }]}
-        >
-            <div className='weather-Card-content'>{title}</div>
-        </UserCard>
-    );
-};

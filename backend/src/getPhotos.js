@@ -5,6 +5,9 @@ const FLICKR_PHOTOS_SERVICES_URL = "https://api.flickr.com/services/rest";
 const FLICKR_PHOTOS_SEARCH_METHOD = "flickr.photos.search";
 const FLICKR_PHOTOS_APIKEY = "89612f71fcd01cdfed9374a0e651e888";
 
+const FLICKR_PHOTOS_URL = "https://www.flickr.com/photos";
+const FLICKR_PHOTOS_FRAME = "in/photostream/lightbox";
+
 // sizes: https://www.flickr.com/services/api/misc.urls.html
 const getPhotos = ({lat, lon}, size='m', count=1, page=1) => (new Promise((resolve, reject) => {
     getPhotosWithinRadius({lat, lon}, {size, count, page, radius: 4}, resolve, reject);
@@ -64,7 +67,8 @@ const transform = (photos, size) => {
             acc.push({
                 url: photo[url],
                 width: photo[width],
-                height: photo[height]
+                height: photo[height],
+                view: `${FLICKR_PHOTOS_URL}/${photo.owner}/${photo.id}/${FLICKR_PHOTOS_FRAME}`
             });
         }
         return acc;
