@@ -46,7 +46,9 @@ class WeatherMapSearch extends ReactLeafletSearch {
 
 const Search = withLeaflet(WeatherMapSearch);
 
-export default class WeatherMap extends Component {
+class WeatherMap extends Component {
+
+    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -108,6 +110,10 @@ export default class WeatherMap extends Component {
         const self = this;
         getWeather(latlng, (data) => {
 
+            if (!this._isMounted) {
+                return;
+            }
+
             if (!data) {
                 console.error('Update marker failed: could not get weather data');
                 return;
@@ -133,6 +139,10 @@ export default class WeatherMap extends Component {
                     center
                 };
             }, () => {
+
+                if (!this._isMounted) {
+                    return;
+                }
 
                 if (centralize) {
 
@@ -170,7 +180,13 @@ export default class WeatherMap extends Component {
     };
 
     componentDidMount() {
+        this._isMounted = true;
+
         this.mapRef.current.leafletElement.locate();
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 }
 
@@ -235,3 +251,5 @@ class WeatherMarker extends Component {
         this.props.onDragend(this.props.id, e.target._latlng);
     };
 }
+
+export default WeatherMap;

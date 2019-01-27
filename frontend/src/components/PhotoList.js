@@ -12,6 +12,8 @@ const COUNT = 20;
 
 class PhotoList extends Component {
 
+    _isMounted = false;
+
     constructor(props) {
         super(props);
 
@@ -43,10 +45,16 @@ class PhotoList extends Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
+
         if (this.props.position) {
             this.loadPhotos();
         }
     }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    } 
 
     componentDidUpdate(prevProps) {
         if (this.props.position !== prevProps.position) {
@@ -56,6 +64,10 @@ class PhotoList extends Component {
 
     loadPhotos() {
         getPhotos(this.props.position, COUNT, 1, (photos) => {
+
+            if (!this._isMounted) {
+                return;
+            }
 
             if (!photos) {
                 this.handleLoadError();
@@ -78,6 +90,10 @@ class PhotoList extends Component {
         ), () => {
             if (this.state.hasMore) {
                 getPhotos(this.props.position, COUNT, this.state.page, (photos) => {
+
+                    if (!this._isMounted) {
+                        return;
+                    }
 
                     if (!photos) {
                         this.handleLoadError();
