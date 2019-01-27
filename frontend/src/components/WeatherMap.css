@@ -1,5 +1,5 @@
-.leaflet-top, .leaflet-bottom {
-  position: fixed !important;
+.weather-Root {
+    position: relative;
 }
 
 .weather-Popup .leaflet-popup-content-wrapper {
@@ -20,19 +20,19 @@
 }
 
 .weather-Root .leaflet-container {
-  height: 800px;
+    height: 100vh;
 }
 
 .leaflet-popup-content {
-  width: inherit !important;
+    width: inherit !important;
 }
 
 .leaflet-search-icon {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .leaflet-search-icon:hover {
-  background-color: #e2e2e2;
+    background-color: #e2e2e2;
 }
 
 .weather-Card {

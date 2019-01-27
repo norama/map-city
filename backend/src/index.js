@@ -38,9 +38,7 @@ app.get('/location/weather', async(req, res, next) => {
 
         const weather = await getWeather(latlon);
 
-        res.json({
-            weather
-        });
+        res.json(weather);
 
     } catch(error) {
         next(error);
@@ -52,13 +50,12 @@ app.get('/location/photos', (req, res, next) => {
 
     const latlon = {lat: req.query.lat, lon: req.query.lon};
     const size = req.query.size;
-    const photosCount = req.query.photosCount ? req.query.photosCount : 1;
+    const count = req.query.count ? req.query.count : 1;
+    const page = req.query.page ? req.query.page : 1;
 
-    getPhotos(latlon, size, photosCount).then((photos) => {
+    getPhotos(latlon, size, count, page).then((photos) => {
 
-        res.json({
-            photos
-        });
+        res.json(photos);
 
     }, next);
 

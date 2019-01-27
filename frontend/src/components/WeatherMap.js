@@ -18,7 +18,7 @@ import {
     withLeaflet
 } from 'react-leaflet';
 
-import getWeather from '../services/WeatherData';
+import getWeather from '../services/getWeather';
 
 class WeatherMapSearch extends ReactLeafletSearch {
 
@@ -54,47 +54,50 @@ export default class WeatherMap extends Component {
         this.mapRef = React.createRef();
 
         this.state = {
-        markers: [],
-        center: {
-            lat: 51.505,
-            lng: -0.09,
-        },
-        zoom: 13,
+            markers: [],
+            center: {
+                lat: 51.505,
+                lng: -0.09,
+            },
+            zoom: 13,
         };
     }
 
     render() {
 
-        return (<div className='weather-Root'>
-        <Map 
-            center={this.state.center} 
-            onLocationfound={this.handleLocationFound}
-            onMoveend={this.handleMoveEnd}
-            onClick={this.handleClick}
-            ref={this.mapRef}
-            zoomControl={false}
-            zoom={this.state.zoom}>
+        return (
+            <div className='weather-Root'>
+                <Map
+                    className='weather-Root'
+                    center={this.state.center} 
+                    onLocationfound={this.handleLocationFound}
+                    onDragend={this.handleDragEnd}
+                    onClick={this.handleClick}
+                    ref={this.mapRef}
+                    zoomControl={false}
+                    zoom={this.state.zoom}>
 
-            <TileLayer
-                attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <ZoomControl
-                position="bottomright"
-            />
-            <Search
-                position="topleft"
-                inputPlaceholder="Enter place"
-                provider="OpenStreetMap"
-                showMarker={true}
-                showPopup={true}
-                addMarker={this.addMarker}
-                openSearchOnLoad={true}
-                closeResultsOnClick={true}
-            />
-            <WeatherMarkersList markers={this.state.markers} onDragend={this.updateMarker} />
-        </Map>
-        </div>)
+                    <TileLayer
+                        attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <ZoomControl
+                        position="bottomright"
+                    />
+                    <Search
+                        position="topleft"
+                        inputPlaceholder="Enter place"
+                        provider="OpenStreetMap"
+                        showMarker={true}
+                        showPopup={true}
+                        addMarker={this.addMarker}
+                        openSearchOnLoad={true}
+                        closeResultsOnClick={true}
+                    />
+                    <WeatherMarkersList markers={this.state.markers} onDragend={this.updateMarker} />
+                </Map>
+            </div>
+        )
     }
 
     addMarker = (latlng, centralize) => {
@@ -126,17 +129,23 @@ export default class WeatherMap extends Component {
             }, () => {
 
                 if (centralize) {
+
                     // centralize workaround, 
                     // for some reason setting state.center is not enough
-                    const c = this.state.center;
-                    const r = 0.2;
-                    this.mapRef.current.leafletElement.fitBounds([
-                        { lat: c.lat - r, lng: c.lng - r }, 
-                        { lat: c.lat + 2*r, lng: c.lng + r }
-                    ]);
+                    setTimeout(() => {
+                        const c = this.state.center;
+                        const r = 0.2;
+
+                        this.mapRef.current.leafletElement.fitBounds([
+                            { lat: c.lat - r, lng: c.lng - r }, 
+                            { lat: c.lat + 4*r, lng: c.lng + r }
+                        ]);
+                    }, 500);
                 }
             });
         });
+
+        this.props.onPositionChange(latlng);
 
     }
 
@@ -144,19 +153,24 @@ export default class WeatherMap extends Component {
         this.addMarker(e.latlng, true);
     };
 
-    handleMoveEnd = (e) => {
-        console.log('Moveend');
-        console.log(this.mapRef.current.leafletElement.getCenter());
-    }
+    handleDragEnd = (e) => {
+        this.mapRef.current.leafletElement.closePopup();
+        const latlng = this.mapRef.current.leafletElement.getCenter();
+        this.props.onPositionChange(latlng);
+    };
 
     handleClick = (e) => {
         this.addMarker(e.latlng);
-    }
+    };
 
     componentDidMount() {
         this.mapRef.current.leafletElement.locate();
     }
 }
+
+WeatherMap.propTypes = {
+    onPositionChange: PropTypes.func.isRequired
+};
 
 class WeatherMarkersList extends Component {
     render() {
@@ -176,7 +190,7 @@ class WeatherMarkersList extends Component {
 
 WeatherMarkersList.propTypes = {
     markers: PropTypes.array.isRequired,
-}
+};
 
 class WeatherMarker extends Component {
 
@@ -222,7 +236,7 @@ const Card = ({ data }) => {
     const title = data.weather.name + ' ('+ data.weather.country +')';
     const photo = data.photos.length ? data.photos[0].url : weather.icon;
 
-    const temperature = weather.temperature + ' \u02DA' + 'C';
+    const temperature = weather.temperature + ' \u02DAC';
     const details = weather.summary + ': ' + weather.description;
     const wind = weather.wind.speed + ' m/s' +
                     (weather.wind.direction ? ', ' + weather.wind.direction + '\u02DA': '');

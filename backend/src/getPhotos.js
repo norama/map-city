@@ -6,11 +6,11 @@ const FLICKR_PHOTOS_SEARCH_METHOD = "flickr.photos.search";
 const FLICKR_PHOTOS_APIKEY = "89612f71fcd01cdfed9374a0e651e888";
 
 // sizes: https://www.flickr.com/services/api/misc.urls.html
-const getPhotos = ({lat, lon}, size='m', count=1) => (new Promise((resolve, reject) => {
-    getPhotosWithinRadius({lat, lon}, size, count, 4, resolve, reject);
+const getPhotos = ({lat, lon}, size='m', count=1, page=1) => (new Promise((resolve, reject) => {
+    getPhotosWithinRadius({lat, lon}, {size, count, page, radius: 4}, resolve, reject);
 }));
 
-const getPhotosWithinRadius = ({lat, lon}, size, count, radius, resolve, reject) => {
+const getPhotosWithinRadius = ({lat, lon}, {size, count, page, radius}, resolve, reject) => {
 
     request({
         url: FLICKR_PHOTOS_SERVICES_URL,
@@ -23,6 +23,7 @@ const getPhotosWithinRadius = ({lat, lon}, size, count, radius, resolve, reject)
             extras: "url_" + size,
             format: "json",
             per_page: count,
+            page: page,
             api_key: FLICKR_PHOTOS_APIKEY
         }
     }, (error, response, body) => {
@@ -41,7 +42,8 @@ const getPhotosWithinRadius = ({lat, lon}, size, count, radius, resolve, reject)
                 } else {
                     const photos = data.photos.photo;
                     if (photos.length < count && radius < 32) {
-                        getPhotosWithinRadius({lat, lon}, count, 2*radius, resolve, reject);
+                        radius *= 2;
+                        getPhotosWithinRadius({lat, lon}, {size, count, page, radius}, resolve, reject);
                     } else {
                         //console.log(photos);
                         resolve(transform(photos, size));

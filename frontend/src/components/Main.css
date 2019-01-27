@@ -1,0 +1,12 @@
+.Main-root {
+    display: flex;
+    width: 100%;
+}
+
+.Main-weather-map {
+    flex: auto;
+}
+
+.Main-photo-list {
+    width: 300px;
+}
