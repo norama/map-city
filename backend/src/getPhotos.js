@@ -10,7 +10,7 @@ const FLICKR_PHOTOS_FRAME = "in/photostream/lightbox";
 
 // sizes: https://www.flickr.com/services/api/misc.urls.html
 const getPhotos = ({lat, lon}, size='m', count=1, page=1) => (new Promise((resolve, reject) => {
-    getPhotosWithinRadius({lat, lon}, {size, count, page, radius: 4}, resolve, reject);
+    getPhotosWithinRadius({lat, lon}, {size, count, page, radius: 32}, resolve, reject);
 }));
 
 const getPhotosWithinRadius = ({lat, lon}, {size, count, page, radius}, resolve, reject) => {
@@ -35,22 +35,28 @@ const getPhotosWithinRadius = ({lat, lon}, {size, count, page, radius}, resolve,
             reject(Boom.boomify(error, { statusCode: 500, message: "Flickr: " + error }));
         } else {
 
-            const data = JSON.parse(body);
-
             if (response.statusCode !== 200) {
-                reject(new Boom("Flickr error", { statusCode: response.statusCode, decorate: data }));
+                console.log(response);
+                reject(new Boom("Flickr error", { statusCode: response.statusCode }));
             } else {
+
+                const data = JSON.parse(body);
+
                 if (data.stat !== "ok") {
+                    console.log(response);
                     reject(new Boom("Flickr: " + data.message));
                 } else {
-                    const photos = data.photos.photo;
-                    if (photos.length < count && radius < 32) {
-                        radius *= 2;
-                        getPhotosWithinRadius({lat, lon}, {size, count, page, radius}, resolve, reject);
-                    } else {
-                        //console.log(photos);
-                        resolve(transform(photos, size));
+
+                    // sometimes returns some photos repeatedly if no more pages,
+                    // handle this by explicit check instead of relying on empty photo array
+                    if (data.photos.page > data.photos.pages) {
+                        resolve([]);
+                        return;
                     }
+
+                    const photos = data.photos.photo;
+                    console.log(photos);
+                    resolve(transform(photos, size));
                 }
             }
         }

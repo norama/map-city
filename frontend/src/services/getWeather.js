@@ -13,8 +13,9 @@ export default function getWeather(latlng, callback) {
     }, (error, response, body) => {
 
         if (error) {
-            alert('Server error\nSee console for details.');
+            alert('Weather server error\nSee console for details.');
             console.error(error);
+            callback(null);
             return;
         }
 
@@ -23,6 +24,7 @@ export default function getWeather(latlng, callback) {
         if (response.statusCode !== 200) {
             alert('Weather data error\nSee console for details.');
             console.error(data);
+            callback(null);
         } else {
             callback(data);
         }

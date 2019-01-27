@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import _ from 'lodash';
 
-import { UserCard } from 'react-ui-cards';
-
 import { ReactLeafletSearch } from 'react-leaflet-search';
 
 import MapCard from './MapCard';
@@ -109,6 +107,12 @@ export default class WeatherMap extends Component {
     updateMarker = (id, latlng, centralize=false) => {
         const self = this;
         getWeather(latlng, (data) => {
+
+            if (!data) {
+                console.error('Update marker failed: could not get weather data');
+                return;
+            }
+
             self.setState((prevState) => {
                 let markers = _.clone(prevState.markers);
 

@@ -11,8 +11,10 @@
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-infinite-scroll-component": "^4.3.0",
     "react-leaflet": "^2.2.0",
     "react-leaflet-search": "^0.6.0",
+    "react-loader-spinner": "^2.3.0",
     "react-scripts": "2.1.1",
     "react-ui-cards": "^1.5.0",
     "request": "^2.88.0"

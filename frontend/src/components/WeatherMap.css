@@ -2,12 +2,12 @@
     position: relative;
 }
 
-.weather-Popup .leaflet-popup-content-wrapper {
-  min-width: 300px;
+.weather-Root .leaflet-container a.leaflet-popup-close-button {
+    padding: 6px 6px 0 0 !important;
 }
 
-.weather-Popup .leaflet-popup-content-wrapper a.leaflet-popup-close-button {
-    padding: 6px 6px 0 0;
+.weather-Root .leaflet-popup-content {
+    margin: 8px 14px;
 }
 
 .weather-Popup-photos {

@@ -1,10 +1,8 @@
 .PhotoList-root {
-    height: 100vh;
-    overflow-y: auto;
     background-color: #ECF0F1;
 }
 
-.PhotoList-root img {
+.PhotoList-root img, .PhotoList-root svg {
     display: block;
     margin: 10px auto;
 }

@@ -1,21 +1,22 @@
 import request from 'request';
 import config from '../config';
 
-export default function getPhotos(latlng, callback) {
+export default function getPhotos(latlng, count, page, callback) {
     request({
         url: config.serviceUrl + '/' + config.serviceEndpoint + '/photos',
         qs: {
             lat: latlng.lat,
             lon: latlng.lng,
             size: 's',
-            count: 10,
-            page: 1
+            count,
+            page,
         }
     }, (error, response, body) => {
 
         if (error) {
-            alert('Server error\nSee console for details.');
+            alert('Photos server error\nSee console for details.');
             console.error(error);
+            callback(null);
             return;
         }
 
@@ -24,6 +25,7 @@ export default function getPhotos(latlng, callback) {
         if (response.statusCode !== 200) {
             alert('Photos data error\nSee console for details.');
             console.error(data);
+            callback(null);
         } else {
             callback(data);
         }

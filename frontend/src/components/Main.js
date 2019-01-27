@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import WeatherMap from './WeatherMap';
 import PhotoList from './PhotoList';
-import getPhotos from '../services/getPhotos';
 
 import './Main.css';
 
@@ -11,7 +10,7 @@ class Main extends Component {
         super(props);
 
         this.state = {
-            photos: []
+            position: null
         }
     }
 
@@ -19,15 +18,13 @@ class Main extends Component {
         return (
             <div className="Main-root">
                 <div className="Main-weather-map"><WeatherMap onPositionChange={this.handlePositionChange} /></div>
-                <div className="Main-photo-list"><PhotoList photos={this.state.photos} /></div>
+                <div className="Main-photo-list"><PhotoList position={this.state.position} /></div>
             </div>
         );
     }
 
     handlePositionChange = (position) => {
-        getPhotos(position, (photos) => {
-            this.setState({ photos });
-        });
+        this.setState({ position });
     }
 }
 
