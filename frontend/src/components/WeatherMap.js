@@ -96,7 +96,11 @@ class WeatherMap extends Component {
                         openSearchOnLoad={true}
                         closeResultsOnClick={true}
                     />
-                    <WeatherMarkersList markers={this.state.markers} onDragend={this.updateMarker} />
+                    <WeatherMarkerList
+                        markers={this.state.markers}
+                        onOpen={this.props.onPositionChange}
+                        onDragend={this.updateMarker}
+                    />
                 </Map>
             </div>
         )
@@ -160,9 +164,6 @@ class WeatherMap extends Component {
                 }
             });
         });
-
-        this.props.onPositionChange(latlng);
-
     }
 
     handleLocationFound = (e) => {
@@ -194,9 +195,11 @@ WeatherMap.propTypes = {
     onPositionChange: PropTypes.func.isRequired
 };
 
-class WeatherMarkersList extends Component {
+class WeatherMarkerList extends Component {
     render() {
         const onDragend = this.props.onDragend;
+        const onOpen = this.props.onOpen;
+
         const items = this.props.markers.map((marker) => (
             <WeatherMarker
                 key={marker.id}
@@ -204,14 +207,17 @@ class WeatherMarkersList extends Component {
                 latlng={marker.latlng}
                 data={marker.data}
                 onDragend={onDragend}
+                onOpen={onOpen}
             />
         ));
         return <div style={{ display: 'none' }}>{items}</div>;   
     }
 }
 
-WeatherMarkersList.propTypes = {
+WeatherMarkerList.propTypes = {
     markers: PropTypes.array.isRequired,
+    onDragEnd: PropTypes.func.isRequired,
+    onOpen: PropTypes.func.isRequired
 };
 
 class WeatherMarker extends Component {
@@ -230,7 +236,7 @@ class WeatherMarker extends Component {
                 draggable={true}
                 onDragend={this.handleDragend}>
 
-                <Popup className='weather-Popup'>
+                <Popup onOpen={this.handleOpenPopup} className='weather-Popup'>
                     <MapCard weather={this.props.data.weather} photos={this.props.data.photos} />
                 </Popup>
             </Marker>
@@ -249,6 +255,10 @@ class WeatherMarker extends Component {
 
     handleDragend = (e) => {
         this.props.onDragend(this.props.id, e.target._latlng);
+    };
+
+    handleOpenPopup = () => {
+        this.props.onOpen(this.props.latlng);
     };
 }
 
