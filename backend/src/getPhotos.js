@@ -36,14 +36,12 @@ const getPhotosWithinRadius = ({lat, lon}, {size, count, page, radius}, resolve,
         } else {
 
             if (response.statusCode !== 200) {
-                console.log(response);
                 reject(new Boom("Flickr error", { statusCode: response.statusCode }));
             } else {
 
                 const data = JSON.parse(body);
 
                 if (data.stat !== "ok") {
-                    console.log(response);
                     reject(new Boom("Flickr: " + data.message));
                 } else {
 
@@ -55,7 +53,6 @@ const getPhotosWithinRadius = ({lat, lon}, {size, count, page, radius}, resolve,
                     }
 
                     const photos = data.photos.photo;
-                    console.log(photos);
                     resolve(transform(photos, size));
                 }
             }

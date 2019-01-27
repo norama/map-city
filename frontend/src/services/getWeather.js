@@ -1,5 +1,6 @@
 import request from 'request';
 import config from '../config';
+import { showError } from './notify';
 
 export default function getWeather(latlng, callback) {
     request({
@@ -13,7 +14,7 @@ export default function getWeather(latlng, callback) {
     }, (error, response, body) => {
 
         if (error) {
-            alert('Weather server error\nSee console for details.');
+            showError('Weather server error');
             console.error(error);
             callback(null);
             return;
@@ -22,7 +23,7 @@ export default function getWeather(latlng, callback) {
         const data = JSON.parse(body);
 
         if (response.statusCode !== 200) {
-            alert('Weather data error\nSee console for details.');
+            showError('Weather data error');
             console.error(data);
             callback(null);
         } else {

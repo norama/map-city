@@ -18,18 +18,15 @@ const getWeather = ({lat, lon}) => (new Promise((resolve, reject) => {
     }, (error, response, body) => {
 
         if (error) {
-            console.log(response);
             reject(Boom.boomify(error, { statusCode: 500, message: "Weather: " + error }));
         } else {
 
             if (response.statusCode !== 200) {
-                console.log(response);
                 reject(new Boom("Weather error", { statusCode: response.statusCode }));
             } else {
 
                 const weather = JSON.parse(body);
 
-                console.log(weather);
                 resolve(formatWeather(weather));
             }
         }

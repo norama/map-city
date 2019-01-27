@@ -1,5 +1,6 @@
 import request from 'request';
 import config from '../config';
+import { showError } from './notify';
 
 export default function getPhotos(latlng, count, page, callback) {
     request({
@@ -14,7 +15,7 @@ export default function getPhotos(latlng, count, page, callback) {
     }, (error, response, body) => {
 
         if (error) {
-            alert('Photos server error\nSee console for details.');
+            showError('Photos server error');
             console.error(error);
             callback(null);
             return;
@@ -23,7 +24,7 @@ export default function getPhotos(latlng, count, page, callback) {
         const data = JSON.parse(body);
 
         if (response.statusCode !== 200) {
-            alert('Photos data error\nSee console for details.');
+            showError('Photos data error');
             console.error(data);
             callback(null);
         } else {
