@@ -17,6 +17,20 @@ app.get('/', (req, res) => {
     res.json({testkey: 'testvalue'});
 });
 
+/*
+ * Weather and photos around location.
+ *
+ * Parameters:
+ * lat, lon: location on map
+ * size: photo size code (default: 's', see https://www.flickr.com/services/api/misc.urls.html)
+ * photosCount: number of requested photos (default: 1)
+ * 
+ * Returns:
+   {
+       weather, // see endpoint /location/weather below
+       photos   // see endpoint /location/photos below
+   }
+ */
 app.get('/location', async (req, res, next) => {
 
     let responses = await collectData(req, next);
@@ -31,6 +45,28 @@ app.get('/location', async (req, res, next) => {
  
 });
 
+/*
+ * Weather
+ *
+ * Parameters:
+ * lat, lon: location on map
+ * 
+ * Returns: 
+    {
+        latlon: {lat, lon},
+        name, // location name
+        country, // country code
+        weather: {
+            summary,
+            description,
+            icon, // weather pictogram url
+            wind: {speed, direction}, // speed: m/s, direction: degrees
+            humidity,
+            pressure, // hPa
+            temperature // degrees celsius
+        }
+    }
+ */
 app.get('/location/weather', async(req, res, next) => {
 
     try {
@@ -46,6 +82,23 @@ app.get('/location/weather', async(req, res, next) => {
 
 });
 
+/*
+ * Photos
+ *
+ * Parameters:
+ * lat, lon: location on map
+ * size: photo size code (default: 's', see https://www.flickr.com/services/api/misc.urls.html)
+ * count: number of requested photos (default: 1)
+ * page: page number (default: 1)
+ * 
+ * Returns: array of photo items:
+   [{
+        url, // static url to show as image
+        width,
+        height,
+        view, // url to link orginal item on flickr
+   }, ...]
+ */
 app.get('/location/photos', (req, res, next) => {
 
     const latlon = {lat: req.query.lat, lon: req.query.lon};
