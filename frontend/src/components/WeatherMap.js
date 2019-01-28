@@ -58,8 +58,8 @@ class WeatherMap extends Component {
         this.state = {
             markers: [],
             center: {
-                lat: 51.505,
-                lng: -0.09,
+                lat: 50.0621350,
+                lng: 14.4374733
             },
             zoom: 13,
         };
@@ -172,9 +172,13 @@ class WeatherMap extends Component {
 
     handleDragEnd = (e) => {
         this.mapRef.current.leafletElement.closePopup();
+        this.handleCentralLocation();
+    };
+
+    handleCentralLocation = () => {
         const latlng = this.mapRef.current.leafletElement.getCenter();
         this.props.onLocationChange(latlng);
-    };
+    }
 
     handleClick = (e) => {
         this.addMarker(e.latlng);
@@ -182,6 +186,8 @@ class WeatherMap extends Component {
 
     componentDidMount() {
         this._isMounted = true;
+
+        this.handleCentralLocation();
 
         this.mapRef.current.leafletElement.locate();
     }
@@ -216,7 +222,7 @@ class WeatherMarkerList extends Component {
 
 WeatherMarkerList.propTypes = {
     markers: PropTypes.array.isRequired,
-    onDragEnd: PropTypes.func.isRequired,
+    onDragend: PropTypes.func.isRequired,
     onOpen: PropTypes.func.isRequired
 };
 
