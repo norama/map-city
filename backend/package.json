@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf dist/ && babel ./src --out-dir dist/ --copy-files && cp package.json dist/package.json && cp now.json dist/now.json",
-    "start": "npm run build && node dist/index.js"
+    "build": "rimraf build/ && babel ./src --out-dir build/ --copy-files && cp package.json build/package.json && cp now.json build/now.json",
+    "start": "yarn run build && node build/index.js"
   },
   "dependencies": {
     "boom": "^7.3.0",

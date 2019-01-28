@@ -1,9 +1,10 @@
 {
     "version": 2,
     "name": "map-city-server",
-    "builds": [
-        { "src": "index.js", "use": "@now/node-server" }
-    ],
+    "builds": [{
+        "src": "index.js",
+        "use": "@now/node-server"
+    }],
     "routes": [{
         "headers": {
             "Access-Control-Allow-Origin": "*",
