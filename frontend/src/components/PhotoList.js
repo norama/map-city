@@ -47,7 +47,7 @@ class PhotoList extends Component {
     componentDidMount() {
         this._isMounted = true;
 
-        if (this.props.position) {
+        if (this.props.location) {
             this.loadPhotos();
         }
     }
@@ -57,13 +57,13 @@ class PhotoList extends Component {
     } 
 
     componentDidUpdate(prevProps) {
-        if (this.props.position !== prevProps.position) {
+        if (this.props.location !== prevProps.location) {
             this.loadPhotos();
         }
     }
 
     loadPhotos() {
-        getPhotos(this.props.position, COUNT, 1, (photos) => {
+        getPhotos(this.props.location, COUNT, 1, (photos) => {
 
             if (!this._isMounted) {
                 return;
@@ -89,7 +89,7 @@ class PhotoList extends Component {
             } : null
         ), () => {
             if (this.state.hasMore) {
-                getPhotos(this.props.position, COUNT, this.state.page, (photos) => {
+                getPhotos(this.props.location, COUNT, this.state.page, (photos) => {
 
                     if (!this._isMounted) {
                         return;
@@ -123,12 +123,10 @@ class PhotoList extends Component {
 }
 
 PhotoList.propTypes = {
-    photos: PropTypes.arrayOf(PropTypes.shape({
-        url: PropTypes.string.isRequired,
-        width: PropTypes.string,
-        height: PropTypes.string,
-        view: PropTypes.string
-    }))
+    location: PropTypes.shape({
+        lat: PropTypes.number,
+        lng: PropTypes.number
+    })
 };
 
 export default PhotoList;

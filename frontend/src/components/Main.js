@@ -10,21 +10,21 @@ class Main extends Component {
         super(props);
 
         this.state = {
-            position: null
+            location: null
         }
     }
 
     render() {
         return (
             <div className="Main-root">
-                <div className="Main-weather-map"><WeatherMap onPositionChange={this.handlePositionChange} /></div>
-                <div className="Main-photo-list"><PhotoList position={this.state.position} /></div>
+                <div className="Main-weather-map"><WeatherMap onLocationChange={this.handleLocationChange} /></div>
+                <div className="Main-photo-list"><PhotoList location={this.state.location} /></div>
             </div>
         );
     }
 
-    handlePositionChange = (position) => {
-        this.setState({ position });
+    handleLocationChange = (location) => {
+        this.setState({ location });
     }
 }
 

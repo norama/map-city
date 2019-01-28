@@ -98,7 +98,7 @@ class WeatherMap extends Component {
                     />
                     <WeatherMarkerList
                         markers={this.state.markers}
-                        onOpen={this.props.onPositionChange}
+                        onOpen={this.props.onLocationChange}
                         onDragend={this.updateMarker}
                     />
                 </Map>
@@ -173,7 +173,7 @@ class WeatherMap extends Component {
     handleDragEnd = (e) => {
         this.mapRef.current.leafletElement.closePopup();
         const latlng = this.mapRef.current.leafletElement.getCenter();
-        this.props.onPositionChange(latlng);
+        this.props.onLocationChange(latlng);
     };
 
     handleClick = (e) => {
@@ -192,7 +192,7 @@ class WeatherMap extends Component {
 }
 
 WeatherMap.propTypes = {
-    onPositionChange: PropTypes.func.isRequired
+    onLocationChange: PropTypes.func.isRequired
 };
 
 class WeatherMarkerList extends Component {
