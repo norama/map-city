@@ -13,11 +13,13 @@
 
 This application is a map-based web application showing weather information loaded from [OpenWeatherMap](https://openweathermap.org/api) and photos loaded from [Flickr](https://www.flickr.com/services/api/explore/flickr.photos.search).
 
-The web app uses a map based UI backed with [react-leaflet](https://react-leaflet.js.org/) to show weather data and photos near location. Use the search box in the upper-left corner to search a location by name, click the appropriate from the list suggested (unfortunately otherwise it will not work, pressing ENTER is not enough - this is a limitation of the component used there). Or else, click on the map to select a location. If no specific location is selected or the map is dragged, photos are shown for the center of the map. The associated photos are shown on the right in a scrollable panel and dynamically added as the panel is scrolled down.
+The web app uses a map based UI backed with [react-leaflet](https://react-leaflet.js.org/) to show weather data and photos near location. Use the search box in the upper-left corner to search a location by name, click the appropriate from the list suggested (unfortunately otherwise it will not work, pressing ENTER is not enough - this is a limitation of the component used there). Or else, click on the map to select a location. If no specific location is selected or the map is dragged, photos are shown for the center of the map.
+
+The associated photos are shown on the right in a scrollable panel and dynamically added as the panel is scrolled down. Clicking on the photo leads to its original version on [flickr](https://www.flickr.com/).
 
 ## Demo
 
-Click [here](https://map-city-client-2019.now.sh/) to see it running.
+Click [here](https://map-city-client.now.sh/) to see it running.
 
 ## Backend
 
@@ -161,7 +163,7 @@ In the browser copy the deployed app URL.
 
 Example: currently deployed at
 
-https://map-city-client-2019.now.sh
+https://map-city-client.now.sh
 
 accessing the deployed backend at
 
