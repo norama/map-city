@@ -9,11 +9,20 @@ const FLICKR_PHOTOS_URL = "https://www.flickr.com/photos";
 const FLICKR_PHOTOS_FRAME = "in/photostream/lightbox";
 
 // sizes: https://www.flickr.com/services/api/misc.urls.html
-const getPhotos = ({lat, lon}, size='m', count=1, page=1) => (new Promise((resolve, reject) => {
+const getPhotos = (
+    {lat, lon} : {lat: number, lon: number},
+    size: string = 'm',
+    count: number = 1,
+    page: number = 1) => (new Promise((resolve: Function, reject: Function) => {
+
     getPhotosWithinRadius({lat, lon}, {size, count, page, radius: 32}, resolve, reject);
+
 }));
 
-const getPhotosWithinRadius = ({lat, lon}, {size, count, page, radius}, resolve, reject) => {
+const getPhotosWithinRadius = (
+    {lat, lon} : {lat: number, lon: number},
+    {size, count, page, radius} : {size: string, count: number, page: number, radius: number},
+    resolve: Function, reject: Function) => {
 
     request({
         url: FLICKR_PHOTOS_SERVICES_URL,
@@ -29,10 +38,10 @@ const getPhotosWithinRadius = ({lat, lon}, {size, count, page, radius}, resolve,
             page: page,
             api_key: FLICKR_PHOTOS_APIKEY
         }
-    }, (error, response, body) => {
+    }, (error: Error, response: $Response, body: any) => {
 
         if (error) {
-            reject(Boom.boomify(error, { statusCode: 500, message: "Flickr: " + error }));
+            reject(Boom.boomify(error, { statusCode: 500, message: "Flickr: " + error.toString() }));
         } else {
 
             if (response.statusCode !== 200) {
@@ -60,7 +69,7 @@ const getPhotosWithinRadius = ({lat, lon}, {size, count, page, radius}, resolve,
     });
 };
 
-const transform = (photos, size) => {
+const transform = (photos: Array<any>, size: string) => {
     const url = "url_" + size;
     const width = "width_" + size;
     const height = "height_" + size;

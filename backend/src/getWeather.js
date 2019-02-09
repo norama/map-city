@@ -6,7 +6,7 @@ const OPEN_WEATHER_MAP_APPID = "702a42edfe2011323fbcbe4cc46a6a41";
 
 const OPEN_WEATHER_MAP_ICON_URL = "https://openweathermap.org/img/w";
 
-const getWeather = ({lat, lon}) => (new Promise((resolve, reject) => {
+const getWeather = ({lat, lon} : {lat: number, lon: number}) => (new Promise((resolve: Function, reject: Function) => {
     request({
         url: OPEN_WEATHER_MAP_URL,
         qs: {
@@ -15,10 +15,10 @@ const getWeather = ({lat, lon}) => (new Promise((resolve, reject) => {
             units: "metric",
             appid: OPEN_WEATHER_MAP_APPID
         }
-    }, (error, response, body) => {
+    }, (error: Error, response: $Response, body: any) => {
 
         if (error) {
-            reject(Boom.boomify(error, { statusCode: 500, message: "Weather: " + error }));
+            reject(Boom.boomify(error, { statusCode: 500, message: "Weather: " + error.toString() }));
         } else {
 
             if (response.statusCode !== 200) {
@@ -33,7 +33,7 @@ const getWeather = ({lat, lon}) => (new Promise((resolve, reject) => {
     });
 }));
 
-const formatWeather = (w) => ({
+const formatWeather = (w: any) => ({
     latlon: {lat: w.coord.lat, lon: w.coord.lon},
     name: w.name,
     country: w.sys.country,
@@ -48,6 +48,6 @@ const formatWeather = (w) => ({
     }
 });
 
-const iconUrl = (icon) => (`${OPEN_WEATHER_MAP_ICON_URL}/${icon}.png`);
+const iconUrl = (icon: string) => (`${OPEN_WEATHER_MAP_ICON_URL}/${icon}.png`);
 
 export default getWeather;

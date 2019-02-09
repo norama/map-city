@@ -6,6 +6,9 @@
   "author": "Nora Mate",
   "license": "MIT",
   "scripts": {
+    "flow": "flow",
+    "flow:deps": "flow-typed install",
+    "flow:check": "flow check src",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf build/ && babel ./src --out-dir build/ --copy-files && cp package.json build/package.json && cp now.json build/now.json",
     "start": "yarn run build && node build/index.js"
@@ -22,6 +25,9 @@
     "@babel/core": "^7.2.2",
     "@babel/plugin-transform-async-to-generator": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
+    "@babel/preset-flow": "^7.0.0",
+    "flow-bin": "^0.92.1",
+    "flow-typed": "^2.5.1",
     "rimraf": "^2.6.3"
   }
 }

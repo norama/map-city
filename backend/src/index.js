@@ -13,7 +13,7 @@ app.use(morgan('combined'));
 const port = process.env.PORT || 3002;
 
 /* GET index page. */
-app.get('/', (req, res) => {
+app.get('/', (req: $Request, res: $Response) => {
     res.json({testkey: 'testvalue'});
 });
 
@@ -31,9 +31,9 @@ app.get('/', (req, res) => {
        photos   // see endpoint /location/photos below
    }
  */
-app.get('/location', async (req, res, next) => {
+app.get('/location', async (req: $Request, res: $Response, next: NextFunction) => {
 
-    let responses = await collectData(req, next);
+    let responses: any = await collectData(req, next);
 
     const weather = responses[0];
     const photos = responses[1];
@@ -67,7 +67,7 @@ app.get('/location', async (req, res, next) => {
         }
     }
  */
-app.get('/location/weather', async(req, res, next) => {
+app.get('/location/weather', async(req: $Request, res: $Response, next: NextFunction) => {
 
     try {
         const latlon = {lat: req.query.lat, lon: req.query.lon};
@@ -99,7 +99,7 @@ app.get('/location/weather', async(req, res, next) => {
         view, // url to link orginal item on flickr
    }, ...]
  */
-app.get('/location/photos', (req, res, next) => {
+app.get('/location/photos', (req: $Request, res: $Response, next: NextFunction) => {
 
     const latlon = {lat: req.query.lat, lon: req.query.lon};
     const size = req.query.size;
@@ -128,7 +128,7 @@ app.listen(port, function () {
  *     "message": "Weather: Nothing to geocode"
  * }
  */
-app.use((err, req, res, next) => {
+app.use((err: any, req: $Request, res: $Response, next: NextFunction) => {
     console.error(err.stack);
     if (err.output) {
         res.status(err.output.statusCode).json(Object.assign({ stack: err.stack }, err.output.payload));

@@ -1,7 +1,7 @@
 import getWeather from './getWeather';
 import getPhotos from './getPhotos';
 
-const collectData = async (req, next) => {
+const collectData = async (req: $Request, next: NextFunction) => {
 
     try {
         const latlon = {lat: req.query.lat, lon: req.query.lon};
