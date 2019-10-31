@@ -16,18 +16,18 @@
   "dependencies": {
     "boom": "^7.3.0",
     "cors": "^2.8.5",
-    "express": "^4.16.4",
+    "express": "^4.17.1",
     "morgan": "^1.9.1",
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-transform-async-to-generator": "^7.2.0",
-    "@babel/preset-env": "^7.2.3",
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-transform-async-to-generator": "^7.5.0",
+    "@babel/preset-env": "^7.6.3",
     "@babel/preset-flow": "^7.0.0",
-    "flow-bin": "^0.92.1",
-    "flow-typed": "^2.5.1",
-    "rimraf": "^2.6.3"
+    "flow-bin": "^0.111.0",
+    "flow-typed": "^2.6.2",
+    "rimraf": "^3.0.0"
   }
 }

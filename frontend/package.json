@@ -6,17 +6,17 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "leaflet": "^1.4.0",
-    "prop-types": "^15.6.2",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-infinite-scroll-component": "^4.3.0",
-    "react-leaflet": "^2.2.0",
+    "leaflet": "^1.5.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-infinite-scroll-component": "^4.5.3",
+    "react-leaflet": "^2.5.0",
     "react-leaflet-search": "^0.6.0",
-    "react-loader-spinner": "^2.3.0",
-    "react-scripts": "2.1.1",
-    "react-toastify": "^4.5.2",
-    "react-ui-cards": "^1.5.0",
+    "react-loader-spinner": "^3.1.4",
+    "react-scripts": "3.2.0",
+    "react-toastify": "^5.4.0",
+    "react-ui-cards": "^2.0.0",
     "request": "^2.88.0"
   },
   "scripts": {
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "babel-polyfill": "^6.26.0",
-    "gh-pages": "^2.0.0"
+    "gh-pages": "^2.1.1"
   },
   "resolutions": {
     "merge": "^1.2.1"
