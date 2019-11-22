@@ -19,7 +19,7 @@ The associated photos are shown on the right in a scrollable panel and dynamical
 
 ## Demo
 
-Click [here](https://map-city-client.now.sh/) to see it running.
+Click [here](https://map-city-client-rzbvmyzuhm.now.sh/) to see it running.
 
 ## Backend
 
@@ -163,7 +163,7 @@ In the browser copy the deployed app URL.
 
 Example: currently deployed at
 
-https://map-city-client.now.sh
+https://map-city-client-rzbvmyzuhm.now.sh/
 
 accessing the deployed backend at
 
