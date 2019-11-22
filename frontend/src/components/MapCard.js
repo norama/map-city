@@ -23,26 +23,27 @@ class MapCard extends Component {
         const wind = weather.wind.speed + ' m/s' +
                         (weather.wind.direction ? ', ' + weather.wind.direction + '\u02DA': '');
         const pressure = weather.pressure + ' hPa';
-    
+
         return (
-            <UserCard
-                ref={this.cardRef}
-                cardClass='weather-Card'
-                header={photo}
-                avatar={weather.icon}
-                name={temperature}
-                positionName={details}
-                href={view ? view : photo}
-                stats={[{
-                    name: 'wind',
-                    value: wind
-                }, {
-                    name: 'pressure',
-                    value: pressure
-                }]}
-            >
-                <div className='weather-Card-content'>{title}</div>
-            </UserCard>
+            <div className="weather-Card">
+                <UserCard
+                    ref={this.cardRef}
+                    header={photo}
+                    avatar={weather.icon}
+                    name={temperature}
+                    positionName={details}
+                    href={view ? view : photo}
+                    stats={[{
+                        name: 'wind',
+                        value: wind
+                    }, {
+                        name: 'pressure',
+                        value: pressure
+                    }]}
+                >
+                    <div className='weather-Card-content'>{title}</div>
+                </UserCard>
+            </div>
         );
     }
 
