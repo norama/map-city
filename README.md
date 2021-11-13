@@ -89,6 +89,7 @@ API endpoints:
 
 ```
     cd backend
+    yarn install
     yarn start
 ```
 
@@ -138,6 +139,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ```
     cd frontend
+    yarn install
     yarn start
 ```
 
